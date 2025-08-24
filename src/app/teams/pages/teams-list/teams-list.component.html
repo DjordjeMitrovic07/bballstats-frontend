@@ -2,8 +2,13 @@
   <div class="row" style="justify-content: space-between;">
     <h2 style="margin:0;">Teams</h2>
     <div class="row">
-      <input placeholder="Filter by name/city" [(ngModel)]="filter" (ngModelChange)="applyFilter()" />
-      <!-- ADMIN dugme za kasnije: <button class="primary" routerLink="/teams/new">+ New Team</button> -->
+      <input
+        placeholder="Filter by name/city"
+        [(ngModel)]="filter"
+        (ngModelChange)="applyFilter()" />
+      <button class="primary" *ngIf="auth.hasRole(['ADMIN'])" routerLink="/teams/new">
+        + New Team
+      </button>
     </div>
   </div>
 

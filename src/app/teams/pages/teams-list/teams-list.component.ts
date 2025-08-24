@@ -4,6 +4,7 @@ import { Team } from '../../../core/models/team.model';
 import { SeasonService } from '../../../core/services/season.service';
 import { Subscription } from 'rxjs';
 import { finalize } from 'rxjs/operators';
+import { AuthService } from '../../../core/services/auth.service';
 
 @Component({
   selector: 'app-teams-list',
@@ -19,7 +20,7 @@ export class TeamsListComponent implements OnInit, OnDestroy {
   view: Team[] = [];
   private sub?: Subscription;
 
-  constructor(private teams: TeamsService, private season: SeasonService) {}
+  constructor(private teams: TeamsService, private season: SeasonService, public auth: AuthService) {}
 
   ngOnInit(): void {
     this.sub = this.season.season$.subscribe(() => this.fetch());

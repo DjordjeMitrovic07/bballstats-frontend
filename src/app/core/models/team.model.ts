@@ -5,3 +5,9 @@ export interface Team {
   foundedYear?: number;
   playersCount?: number;
 }
+
+export interface TeamCreateRequest {
+  name: string;
+  city: string;
+  foundedYear?: number | null;
+}
