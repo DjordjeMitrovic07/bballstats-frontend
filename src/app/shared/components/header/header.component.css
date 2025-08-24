@@ -1,0 +1,11 @@
+.header {
+  position: sticky; top: 0; z-index: 100;
+  display: flex; align-items: center; justify-content: space-between;
+  gap: 12px; padding: 12px 16px; background: #0a1224; border-bottom: 1px solid #1f2a44;
+}
+.header-left { display: flex; gap: 10px; align-items: center; cursor: pointer; }
+.logo { font-size: 20px; }
+.brand { font-weight: 700; letter-spacing: .5px; }
+.header-middle { display: flex; gap: 10px; flex: 1; justify-content: center; }
+.header-middle input { width: 360px; }
+.header-right { display: flex; gap: 10px; align-items: center; }

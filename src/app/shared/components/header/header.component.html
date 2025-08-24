@@ -1,0 +1,22 @@
+<header class="header">
+  <div class="header-left" (click)="goHome()">
+    <div class="logo">🏀</div>
+    <div class="brand">BBallStats</div>
+  </div>
+
+  <div class="header-middle">
+    <input placeholder="Search (player/team) — WIP" />
+    <select [ngModel]="season.current" (ngModelChange)="onSeasonChange($event)">
+      <option *ngFor="let s of seasons" [value]="s">{{ s }}</option>
+    </select>
+  </div>
+
+  <div class="header-right" *ngIf="auth.isLoggedIn(); else guest">
+    <span class="badge">{{ auth.email }}</span>
+    <button class="primary" (click)="logout()">Logout</button>
+  </div>
+
+  <ng-template #guest>
+    <a routerLink="/auth/login">Login</a>
+  </ng-template>
+</header>

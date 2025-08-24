@@ -1,1 +1,30 @@
-/* You can add global styles to this file, and also import other style files */
+:root {
+  --bg: #0b0f19;
+  --card: #121828;
+  --text: #e6e8f0;
+  --muted: #94a3b8;
+  --accent: #3b82f6;
+  --danger: #ef4444;
+}
+* { box-sizing: border-box; }
+html, body { height: 100%; }
+body {
+  margin: 0;
+  font-family: Inter, system-ui, -apple-system, Segoe UI, Roboto, 'Helvetica Neue', Arial, 'Noto Sans';
+  background: var(--bg);
+  color: var(--text);
+}
+a { color: var(--accent); text-decoration: none; }
+a:hover { text-decoration: underline; }
+.container { max-width: 1200px; margin: 0 auto; padding: 16px; }
+.card { background: var(--card); border-radius: 14px; padding: 16px; box-shadow: 0 6px 24px rgba(0,0,0,.25); }
+.row { display: flex; gap: 16px; align-items: center; flex-wrap: wrap; }
+input, select, button {
+  background: #0e1528; color: var(--text); border: 1px solid #1f2a44; border-radius: 10px; padding: 10px 12px;
+}
+button { cursor: pointer; }
+button.primary { background: var(--accent); border-color: var(--accent); color:#fff; }
+table { width: 100%; border-collapse: collapse; }
+th, td { padding: 10px 8px; border-bottom: 1px solid #20263a; }
+th { text-align: left; color: var(--muted); font-weight: 600; }
+.badge { padding: 2px 8px; border-radius: 999px; font-size: 12px; background:#1d2a4a; color:#a5b4fc; }
