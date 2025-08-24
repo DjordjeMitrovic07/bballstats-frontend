@@ -2,9 +2,9 @@ import { Component, OnDestroy, OnInit } from '@angular/core';
 import { TeamsService } from '../../services/teams.service';
 import { Team } from '../../../core/models/team.model';
 import { SeasonService } from '../../../core/services/season.service';
+import { AuthService } from '../../../core/services/auth.service';
 import { Subscription } from 'rxjs';
 import { finalize } from 'rxjs/operators';
-import { AuthService } from '../../../core/services/auth.service';
 
 @Component({
   selector: 'app-teams-list',
@@ -20,7 +20,11 @@ export class TeamsListComponent implements OnInit, OnDestroy {
   view: Team[] = [];
   private sub?: Subscription;
 
-  constructor(private teams: TeamsService, private season: SeasonService, public auth: AuthService) {}
+  constructor(
+    private teams: TeamsService,
+    private season: SeasonService,
+    public auth: AuthService
+  ) {}
 
   ngOnInit(): void {
     this.sub = this.season.season$.subscribe(() => this.fetch());
@@ -29,32 +33,37 @@ export class TeamsListComponent implements OnInit, OnDestroy {
   ngOnDestroy(): void { this.sub?.unsubscribe(); }
 
   fetch() {
-    this.loading = true;
-    this.error = null;
-
+    this.loading = true; this.error = null;
     this.teams.list()
-      .pipe(finalize(() => { this.loading = false; }))   // 👈 uvek ugasi "Učitavanje..."
+      .pipe(finalize(() => (this.loading = false)))
       .subscribe({
-        next: (rows) => {
-          console.log('GET /api/teams OK:', rows);       // 👈 privremeni log
-          this.data = rows ?? [];
-          this.applyFilter();
-        },
-        error: (err) => {
-          console.error('GET /api/teams ERROR:', err);   // 👈 privremeni log
-          this.error = err?.error?.message || 'Greška pri učitavanju timova.';
-        }
+        next: rows => { this.data = rows ?? []; this.applyFilter(); },
+        error: err => { this.error = err?.error?.message || 'Greška pri učitavanju timova.'; }
       });
   }
 
-
   applyFilter() {
     const q = this.filter.trim().toLowerCase();
-    this.view = !q
-      ? this.data.slice()
-      : this.data.filter(t =>
-        (t.name ?? '').toLowerCase().includes(q) ||
-        (t.city ?? '').toLowerCase().includes(q)
-      );
+    this.view = !q ? this.data.slice() : this.data.filter(t =>
+      (t.name ?? '').toLowerCase().includes(q) || (t.city ?? '').toLowerCase().includes(q)
+    );
+  }
+
+  deleteTeam(t: Team) {
+    if (!t?.id) return;
+    if (!confirm(`Delete team "${t.name}"?`)) return;
+    this.loading = true; this.error = null;
+
+    this.teams.delete(t.id)
+      .pipe(finalize(() => (this.loading = false)))
+      .subscribe({
+        next: () => {
+          this.data = this.data.filter(x => x.id !== t.id);
+          this.applyFilter();
+        },
+        error: (err) => {
+          this.error = err?.error?.message || 'Greška pri brisanju tima.';
+        }
+      });
   }
 }

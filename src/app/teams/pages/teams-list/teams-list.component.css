@@ -1,47 +1,40 @@
-:host {
-  display: block;
-}
+:host { display: block; }
 
 /* zaglavlje kartice (filter + dugme) */
-.card > .row {
-  margin-bottom: 12px;
-}
+.card > .row { margin-bottom: 12px; }
 
 /* filter input i dugme */
-.card > .row input {
-  width: 260px;
+.card > .row input { width: 260px; }
+.card > .row button { height: 38px; }
+
+/* tabela – hover i razmak */
+table tbody tr:hover { background: rgba(255,255,255,0.02); }
+td, th { padding-top: 12px; padding-bottom: 12px; }
+
+/* kolona Actions */
+.actions-col { text-align: right; }
+td.actions {
+  display: flex;
+  justify-content: flex-end;
+  gap: 8px;
 }
 
-.card > .row button {
-  height: 38px;
+/* dugmad */
+button.ghost {
+  background: transparent;
+  border-color: #1f2a44;
+}
+button.danger {
+  background: var(--danger);
+  border-color: var(--danger);
+  color: #fff;
 }
 
-/* tabela – suptilni hover, bolji razmak */
-table tbody tr:hover {
-  background: rgba(255, 255, 255, 0.02);
-}
+/* “Nema rezultata.” centriraj */
+td[colspan] { text-align: center; padding: 20px 8px; color: var(--muted); }
 
-td, th {
-  padding-top: 12px;
-  padding-bottom: 12px;
-}
-
-/* “Nema rezultata.” poravnanje */
-td[colspan] {
-  text-align: center;
-  padding: 20px 8px;
-  color: var(--muted);
-}
-
-/* mobilno: input preko cele širine, dugme ispod */
+/* mobilno */
 @media (max-width: 520px) {
-  .card > .row {
-    gap: 8px;
-  }
-  .card > .row input {
-    width: 100%;
-  }
-  .card > .row button {
-    width: 100%;
-  }
+  .card > .row { gap: 8px; }
+  .card > .row input, .card > .row button { width: 100%; }
 }

@@ -22,6 +22,7 @@
       <th>City</th>
       <th>Founded</th>
       <th>#Players</th>
+      <th *ngIf="auth.hasRole(['ADMIN'])" class="actions-col">Actions</th>
     </tr>
     </thead>
     <tbody>
@@ -30,9 +31,15 @@
       <td>{{ t.city }}</td>
       <td>{{ t.foundedYear || '—' }}</td>
       <td>{{ t.playersCount ?? '—' }}</td>
+      <td *ngIf="auth.hasRole(['ADMIN'])" class="actions">
+        <button class="ghost" [routerLink]="['/teams', t.id, 'edit']">Edit</button>
+        <button class="danger" (click)="deleteTeam(t)">Delete</button>
+      </td>
     </tr>
     <tr *ngIf="view.length === 0">
-      <td colspan="4" style="color:var(--muted)">Nema rezultata.</td>
+      <td [attr.colspan]="auth.hasRole(['ADMIN']) ? 5 : 4" style="color:var(--muted)">
+        Nema rezultata.
+      </td>
     </tr>
     </tbody>
   </table>

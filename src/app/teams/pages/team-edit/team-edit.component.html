@@ -1,0 +1,21 @@
+<div class="card" style="max-width:560px;margin:0 auto;">
+  <h2 style="margin-top:0;">Edit Team</h2>
+
+  <div *ngIf="loading">Učitavanje…</div>
+  <div *ngIf="!loading">
+    <form (ngSubmit)="submit()" [formGroup]="form" class="row">
+      <input placeholder="Name" formControlName="name" />
+      <input placeholder="City" formControlName="city" />
+      <input type="number" placeholder="Founded year (opciono)" formControlName="foundedYear" />
+
+      <div class="actions">
+        <button type="button" class="ghost" (click)="cancel()">Cancel</button>
+        <button class="primary" [disabled]="saving || form.invalid">
+          {{ saving ? 'Saving...' : 'Save changes' }}
+        </button>
+      </div>
+
+      <div *ngIf="error" class="error">{{ error }}</div>
+    </form>
+  </div>
+</div>
