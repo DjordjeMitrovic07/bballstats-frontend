@@ -1,22 +1,25 @@
-<header class="header">
-  <div class="header-left" (click)="goHome()">
-    <div class="logo">🏀</div>
-    <div class="brand">BBallStats</div>
-  </div>
+<header class="topbar">
+  <div class="brand" routerLink="/">🏀 BBallStats</div>
 
-  <div class="header-middle">
-    <input placeholder="Search (player/team) — WIP" />
-    <select [ngModel]="season.current" (ngModelChange)="onSeasonChange($event)">
-      <option *ngFor="let s of seasons" [value]="s">{{ s }}</option>
-    </select>
-  </div>
+  <nav class="nav">
+    <a routerLink="/teams" routerLinkActive="active">Teams</a>
+    <a routerLink="/players" routerLinkActive="active">Players</a>
+    <a routerLink="/games" routerLinkActive="active">Games</a>
+    <a routerLink="/metrics" routerLinkActive="active">Metrics</a>
+  </nav>
 
-  <div class="header-right" *ngIf="auth.isLoggedIn(); else guest">
-    <span class="badge">{{ auth.email }}</span>
-    <button class="primary" (click)="logout()">Logout</button>
-  </div>
+  <div class="grow"></div>
 
-  <ng-template #guest>
-    <a routerLink="/auth/login">Login</a>
-  </ng-template>
+  <!-- WIP: global search -->
+  <input class="search" placeholder="Search (player/team) — WIP" />
+
+  <!-- sezona -->
+  <select class="season"
+          [ngModel]="season.selected()"
+          (ngModelChange)="onSeasonChange($event)">
+    <option *ngFor="let s of seasons" [value]="s">{{ s }}</option>
+  </select>
+
+  <span class="user">{{ auth.email }}</span>
+  <button class="primary" (click)="auth.logout()">Logout</button>
 </header>

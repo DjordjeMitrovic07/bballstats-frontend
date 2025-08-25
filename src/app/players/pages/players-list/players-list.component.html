@@ -1,0 +1,46 @@
+<div class="card">
+  <div class="row" style="justify-content: space-between;">
+    <h2 style="margin:0;">Players</h2>
+    <div class="row">
+      <input placeholder="Filter by name / team / position"
+             [(ngModel)]="filter"
+             (ngModelChange)="applyFilter()" />
+      <button *ngIf="admin" class="primary" (click)="goNew()" style="margin-left:8px;">+ New Player</button>
+      <!-- Ako AuthService nema isAdmin() kao metoda, promeni u auth.isAdmin -->
+    </div>
+  </div>
+
+  <div *ngIf="loading" style="padding:12px;">Učitavanje…</div>
+  <div *ngIf="error" style="padding:12px; color: var(--danger)">{{ error }}</div>
+
+  <table *ngIf="!loading && !error">
+    <thead>
+    <tr>
+      <th>Name</th>
+      <th>Team</th>
+      <th>Position</th>
+      <th>Jersey</th>
+      <th>Height (cm)</th>
+      <th>Weight (kg)</th>
+      <th *ngIf="admin" style="width:160px;">Actions</th>
+    </tr>
+    </thead>
+    <tbody>
+    <tr *ngFor="let p of view" (click)="open(p)" class="row-link">
+      <td>{{ fullName(p) }}</td>
+      <td>{{ p.teamName || '—' }}</td>
+      <td>{{ p.position || '—' }}</td>
+      <td>{{ p.jerseyNumber ?? '—' }}</td>
+      <td>{{ p.heightCm ?? '—' }}</td>
+      <td>{{ p.weightKg ?? '—' }}</td>
+      <td *ngIf="admin" (click)="$event.stopPropagation()">
+        <button class="ghost" (click)="goEdit(p)">Edit</button>
+        <button class="danger" (click)="remove(p, $event)">Delete</button>
+      </td>
+    </tr>
+    <tr *ngIf="view.length === 0">
+      <td colspan="7" style="color:var(--muted); text-align:center;">Nema rezultata.</td>
+    </tr>
+    </tbody>
+  </table>
+</div>

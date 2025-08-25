@@ -3,16 +3,18 @@ import { BehaviorSubject } from 'rxjs';
 
 @Injectable({ providedIn: 'root' })
 export class SeasonService {
-  private _season$ = new BehaviorSubject<string>('2024/25');
-  season$ = this._season$.asObservable();
+  private readonly _seasons = ['2022/23', '2023/24', '2024/25'];
+  private readonly _season$ = new BehaviorSubject<string>(this._seasons[this._seasons.length - 1]);
 
-  get current(): string { return this._season$.value; }
+  /** Slušanje promene sezone u drugim komponentama */
+  readonly season$ = this._season$.asObservable();
 
-  setSeason(value: string) {
-    this._season$.next(value);
-  }
+  /** Lista sezona za dropdown u headeru */
+  allSeasons(): string[] { return this._seasons; }
 
-  allSeasons(): string[] {
-    return ['2024/25', '2023/24', '2022/23'];
-  }
+  /** Trenutno izabrana sezona (za [ngModel]) */
+  selected(): string { return this._season$.value; }
+
+  /** Promeni sezonu (za (ngModelChange)) */
+  set(value: string): void { this._season$.next(value); }
 }

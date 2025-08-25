@@ -22,6 +22,8 @@ const routes: Routes = [
     loadChildren: () => import('./teams/teams.module').then(m => m.TeamsModule) // placeholder
   },
 
+  { path: 'players', loadChildren: () => import('./players/players.module').then(m => m.PlayersModule) },
+
   { path: '**', redirectTo: 'teams' }
 ];
 

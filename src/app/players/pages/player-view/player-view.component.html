@@ -1,0 +1,19 @@
+<div class="card" style="max-width:720px;margin:0 auto;">
+  <h2 style="margin-top:0;">Player</h2>
+
+  <div *ngIf="loading">Učitavanje…</div>
+  <div *ngIf="!loading && error" class="error">{{ error }}</div>
+
+  <div *ngIf="!loading && player" class="grid">
+    <div class="field"><label>Name</label><div>{{ (player.firstName || '') + ' ' + (player.lastName || '') }}</div></div>
+    <div class="field"><label>Team</label><div>{{ player.teamName || '—' }}</div></div>
+    <div class="field"><label>Position</label><div>{{ player.position || '—' }}</div></div>
+    <div class="field"><label>Jersey</label><div>{{ player.jerseyNumber ?? '—' }}</div></div>
+    <div class="field"><label>Height</label><div>{{ player.heightCm ? player.heightCm + ' cm' : '—' }}</div></div>
+    <div class="field"><label>Weight</label><div>{{ player.weightKg ? player.weightKg + ' kg' : '—' }}</div></div>
+
+    <div class="actions">
+      <button class="ghost" (click)="back()">Back to list</button>
+    </div>
+  </div>
+</div>

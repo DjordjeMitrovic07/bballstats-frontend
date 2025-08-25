@@ -5,7 +5,7 @@ import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-header',
-  standalone:false,
+  standalone: false,
   templateUrl: './header.component.html',
   styleUrls: ['./header.component.css']
 })
@@ -17,18 +17,18 @@ export class HeaderComponent {
     public auth: AuthService,
     private router: Router
   ) {
-    this.seasons = season.allSeasons();
+    this.seasons = this.season.allSeasons();
   }
 
-  onSeasonChange(value: string) {
-    this.season.setSeason(value);
+  onSeasonChange(value: string): void {
+    this.season.set(value);   // <-- ranije je bilo setSeason
   }
 
-  logout() {
+  logout(): void {
     this.auth.logout();
   }
 
-  goHome() {
+  goHome(): void {
     this.router.navigate(['/']);
   }
 }

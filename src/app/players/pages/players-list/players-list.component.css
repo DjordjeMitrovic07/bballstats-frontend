@@ -1,0 +1,15 @@
+button.ghost {
+  background: transparent;
+  border: 1px solid #1f2a44;
+  color: #c9d1e3;
+  padding: 6px 10px;
+  border-radius: 8px;
+  margin-right: 6px;
+}
+button.danger {
+  background: transparent;
+  border: 1px solid #a63a3a;
+  color: #ffb3b3;
+  padding: 6px 10px;
+  border-radius: 8px;
+}

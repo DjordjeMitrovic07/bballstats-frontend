@@ -16,6 +16,8 @@ export class AuthService {
     return this.api.post<LoginResponse>('/auth/login', payload);
   }
 
+  isAdmin() { return this.role === 'ADMIN'; }
+
   saveSession(resp: LoginResponse) {
     localStorage.setItem(TOKEN_KEY, resp.token);
     localStorage.setItem(ROLE_KEY, resp.role);
