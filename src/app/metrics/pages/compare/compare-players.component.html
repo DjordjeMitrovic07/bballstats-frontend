@@ -1,0 +1,125 @@
+<div class="cmp-page">
+  <h1 class="title">Compare Players</h1>
+
+  <!-- Controls -->
+  <div class="controls">
+    <select [(ngModel)]="season" class="ctl" (change)="onSeasonChange()">
+      <option *ngFor="let s of seasons" [value]="s">{{ s }}</option>
+    </select>
+
+    <select [(ngModel)]="p1Id" class="ctl" (change)="onPlayersChange()">
+      <option [ngValue]="null">Choose Player 1</option>
+      <option *ngFor="let p of players" [ngValue]="p.id">
+        {{ p.lastName }}, {{ p.firstName }}
+      </option>
+    </select>
+
+    <select [(ngModel)]="p2Id" class="ctl" (change)="onPlayersChange()">
+      <option [ngValue]="null">Choose Player 2</option>
+      <option *ngFor="let p of players" [ngValue]="p.id">
+        {{ p.lastName }}, {{ p.firstName }}
+      </option>
+    </select>
+
+    <button class="btn" (click)="compare()" [disabled]="!canCompare()">Compare</button>
+  </div>
+
+  <!-- States -->
+  <div *ngIf="loadingPlayers" class="state muted">Loading players…</div>
+  <div *ngIf="error" class="state error">{{ error }}</div>
+
+  <!-- Cards -->
+  <div class="cards" *ngIf="!error && L && R">
+    <!-- LEFT card -->
+    <div class="player-card">
+      <div class="header">
+        <img class="avatar" [src]="playerPic(L.playerId)" (error)="imgErr($event, 'player')" alt="player" />
+        <div class="who">
+          <div class="name">{{ L.playerName || L.name }}</div>
+          <div class="abbr">{{ L.teamName || L.teamAbbr }}</div>
+        </div>
+      </div>
+
+      <div class="team-chip" *ngIf="L.teamId || L.teamName">
+        <img [src]="teamPic(L.teamId)" (error)="imgErr($event, 'team')" alt="team" />
+        <span>{{ L.teamName || L.teamAbbr }}</span>
+      </div>
+
+      <ul class="metrics">
+        <li>
+          <span>TS%</span>
+          <div class="bar"><div class="fill" [style.width.%]="(L.ts || 0) * 100"></div></div>
+          <span class="val">{{ (L.ts || 0) | percent:'1.0-1' }}</span>
+        </li>
+        <li>
+          <span>eFG%</span>
+          <div class="bar"><div class="fill" [style.width.%]="(L.efg || 0) * 100"></div></div>
+          <span class="val">{{ (L.efg || 0) | percent:'1.0-1' }}</span>
+        </li>
+        <li>
+          <span>USG%</span>
+          <div class="bar">
+            <div class="fill" [style.width.%]="clamp(L.usg || 0, 0, 100)"></div>
+          </div>
+          <span class="val">{{ (L.usg || 0) | number:'1.0-1' }}%</span>
+        </li>
+        <li>
+          <span>PPG</span>
+          <div class="bar"><div class="fill" [style.width.%]="(L.ptsPerGame || 0) * (100/50)"></div></div>
+          <span class="val">{{ L.ptsPerGame | number:'1.1-1' }}</span>
+        </li>
+        <li>
+          <span>MPG</span>
+          <div class="bar"><div class="fill" [style.width.%]="(L.minPerGame || 0) * (100/48)"></div></div>
+          <span class="val">{{ L.minPerGame | number:'1.1-1' }}</span>
+        </li>
+      </ul>
+    </div>
+
+    <!-- RIGHT card -->
+    <div class="player-card">
+      <div class="header">
+        <img class="avatar" [src]="playerPic(R.playerId)" (error)="imgErr($event, 'player')" alt="player" />
+        <div class="who">
+          <div class="name">{{ R.playerName || R.name }}</div>
+          <div class="abbr">{{ R.teamName || R.teamAbbr }}</div>
+        </div>
+      </div>
+
+      <div class="team-chip" *ngIf="R.teamId || R.teamName">
+        <img [src]="teamPic(R.teamId)" (error)="imgErr($event, 'team')" alt="team" />
+        <span>{{ R.teamName || R.teamAbbr }}</span>
+      </div>
+
+      <ul class="metrics">
+        <li>
+          <span>TS%</span>
+          <div class="bar"><div class="fill" [style.width.%]="(R.ts || 0) * 100"></div></div>
+          <span class="val">{{ (R.ts || 0) | percent:'1.0-1' }}</span>
+        </li>
+        <li>
+          <span>eFG%</span>
+          <div class="bar"><div class="fill" [style.width.%]="(R.efg || 0) * 100"></div></div>
+          <span class="val">{{ (R.efg || 0) | percent:'1.0-1' }}</span>
+        </li>
+        <li>
+          <span>USG%</span>
+          <div class="bar">
+            <div class="fill" [style.width.%]="clamp(R.usg || 0, 0, 100)"></div>
+          </div>
+          <span class="val">{{ (R.usg || 0) | number:'1.0-1' }}%</span>
+        </li>
+        <li>
+          <span>PPG</span>
+          <div class="bar"><div class="fill" [style.width.%]="(R.ptsPerGame || 0) * (100/50)"></div></div>
+          <span class="val">{{ R.ptsPerGame | number:'1.1-1' }}</span>
+        </li>
+        <li>
+          <span>MPG</span>
+          <div class="bar"><div class="fill" [style.width.%]="(R.minPerGame || 0) * (100/48)"></div></div>
+          <span class="val">{{ R.minPerGame | number:'1.1-1' }}</span>
+        </li>
+      </ul>
+    </div>
+  </div>
+</div>

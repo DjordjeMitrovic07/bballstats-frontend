@@ -1,0 +1,15 @@
+.tm-card {
+  background: #101826;
+  border: 1px solid #1f2a3a;
+  border-radius: 14px;
+  padding: 16px;
+}
+.tm-header {
+  font-weight: 600;
+  margin-bottom: 10px;
+}
+.tm-state.muted { color: #9aa4b2; }
+.tm-state.error { color: #ff6b6b; }
+.tm-list { list-style: none; margin: 0; padding: 0; display: grid; gap: 8px; }
+.tm-list li { display: flex; justify-content: space-between; }
+.tm-list .v { font-weight: 600; }

@@ -1,0 +1,87 @@
+<div class="metrics-page">
+
+  <!-- Toggle: Players / Teams -->
+  <div class="controls" style="gap:12px; align-items:center;">
+    <div style="display:inline-flex; border:1px solid #2a2f3a; border-radius:10px; overflow:hidden">
+      <button type="button"
+              (click)="view='players'"
+              [class.active]="view==='players'"
+              style="padding:6px 12px; background: transparent; color: inherit; border: 0;">
+        Players
+      </button>
+      <button type="button"
+              (click)="view='teams'"
+              [class.active]="view==='teams'"
+              style="padding:6px 12px; background: transparent; color: inherit; border: 0; border-left:1px solid #2a2f3a;">
+        Teams
+      </button>
+
+      <!-- NOVO -->
+      <a routerLink="/metrics/compare" class="primary" style="margin-left:8px; text-decoration:none; padding:6px 10px; border-radius:8px;">
+        Compare Players
+      </a>
+
+    </div>
+    <!-- (opciono) ostali filteri: season / minGames / minMpg -->
+    <!--
+    <label>Season:
+      <input type="text" [(ngModel)]="season" (ngModelChange)="reloadAll()">
+    </label>
+    <label>Min games:
+      <input type="number" [(ngModel)]="minGames" (ngModelChange)="reloadAll()">
+    </label>
+    <label>Min MPG:
+      <input type="number" [(ngModel)]="minMpg" (ngModelChange)="reloadAll()">
+    </label>
+    -->
+  </div>
+
+  <!-- ===== PLAYERS ===== -->
+  <div class="metrics-grid" *ngIf="view==='players'">
+    <app-leaderboard [title]="'Points per Game'"
+                     metric="pts" [season]="season"
+                     [top]="5" [minGames]="minGames" [minMpg]="minMpg"></app-leaderboard>
+
+    <app-leaderboard [title]="'Assists per Game'"
+                     metric="apg" [season]="season"
+                     [top]="5" [minGames]="minGames" [minMpg]="minMpg"></app-leaderboard>
+
+    <app-leaderboard [title]="'Rebounds per Game'"
+                     metric="rpg" [season]="season"
+                     [top]="5" [minGames]="minGames" [minMpg]="minMpg"></app-leaderboard>
+
+    <app-leaderboard [title]="'Effective FG %'"
+                     metric="efg" [season]="season"
+                     [top]="5" [minGames]="minGames" [minMpg]="minMpg"></app-leaderboard>
+
+    <app-leaderboard [title]="'True Shooting %'"
+                     metric="ts" [season]="season"
+                     [top]="5" [minGames]="minGames" [minMpg]="minMpg"></app-leaderboard>
+
+    <app-leaderboard [title]="'3PT %'"
+                     metric="tp3p" [season]="season"
+                     [top]="5" [minGames]="minGames" [minMpg]="minMpg"></app-leaderboard>
+  </div>
+
+  <!-- ===== TEAMS ===== -->
+  <div class="metrics-grid" *ngIf="view==='teams'">
+    <app-leaderboard [title]="'Team Points per Game'" metric="pts" [season]="season"
+                     [top]="5" [minGames]="minGames" mode="team"></app-leaderboard>
+
+    <app-leaderboard [title]="'Team Assists per Game'" metric="apg" [season]="season"
+                     [top]="5" [minGames]="minGames" mode="team"></app-leaderboard>
+
+    <app-leaderboard [title]="'Team Rebounds per Game'" metric="rpg" [season]="season"
+                     [top]="5" [minGames]="minGames" mode="team"></app-leaderboard>
+
+    <app-leaderboard [title]="'Team Effective FG %'" metric="efg" [season]="season"
+                     [top]="5" [minGames]="minGames" mode="team"></app-leaderboard>
+
+    <app-leaderboard [title]="'Team True Shooting %'" metric="ts" [season]="season"
+                     [top]="5" [minGames]="minGames" mode="team"></app-leaderboard>
+
+    <app-leaderboard [title]="'Team 3PT %'" metric="tp3p" [season]="season"
+                     [top]="5" [minGames]="minGames" mode="team"></app-leaderboard>
+  </div>
+
+</div>

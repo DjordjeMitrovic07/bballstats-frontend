@@ -19,6 +19,10 @@ export class PlayersService {
     );
   }
 
+  getAll(): Observable<Player[]> {
+    return this.list();
+  }
+
   get(id: number): Observable<Player> {
     return this.api.get<Player>(`/api/players/${id}`);
   }

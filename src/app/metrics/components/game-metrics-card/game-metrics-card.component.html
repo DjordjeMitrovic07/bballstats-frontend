@@ -1,0 +1,41 @@
+<!-- src/app/metrics/components/game-metrics-card/game-metrics-card.component.html -->
+<div class="card">
+  <div class="card-header">
+    <div class="title">Game Metrics</div>
+  </div>
+
+  <div *ngIf="loading" class="state muted">Loading…</div>
+  <div *ngIf="error && !loading" class="state error">{{ error }}</div>
+
+  <!-- grid samo ako ima bar jedan tim -->
+  <div class="grid2" *ngIf="!loading && !error && rows?.length">
+    <!-- LEFT -->
+    <div class="team-col" *ngIf="left as L">
+      <div class="team-name">{{ L.teamName }}</div>
+      <ul class="metrics">
+        <li><span>Pace</span><span class="v">{{ L.pace | number:'1.0-1' }}</span></li>
+        <li><span>Off Rating</span><span class="v">{{ L.ortg | number:'1.0-1' }} per 100</span></li>
+        <li><span>Def Rating</span><span class="v">{{ L.drtg | number:'1.0-1' }} per 100</span></li>
+        <li><span>eFG%</span><span class="v">{{ pct(L.efg) }}</span></li>
+        <li><span>TS%</span><span class="v">{{ pct(L.ts) }}</span></li>
+      </ul>
+    </div>
+
+    <!-- RIGHT -->
+    <div class="team-col" *ngIf="right as R">
+      <div class="team-name">{{ R.teamName }}</div>
+      <ul class="metrics">
+        <li><span>Pace</span><span class="v">{{ R.pace | number:'1.0-1' }}</span></li>
+        <li><span>Off Rating</span><span class="v">{{ R.ortg | number:'1.0-1' }} per 100</span></li>
+        <li><span>Def Rating</span><span class="v">{{ R.drtg | number:'1.0-1' }} per 100</span></li>
+        <li><span>eFG%</span><span class="v">{{ pct(R.efg) }}</span></li>
+        <li><span>TS%</span><span class="v">{{ pct(R.ts) }}</span></li>
+      </ul>
+    </div>
+  </div>
+
+  <!-- “no data” ako su sve rute dale 500 i ostali smo bez redova -->
+  <div class="state muted" *ngIf="!loading && !error && (!rows || !rows.length)">
+    No game metrics available yet.
+  </div>
+</div>

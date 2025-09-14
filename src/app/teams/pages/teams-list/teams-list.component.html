@@ -1,46 +1,54 @@
-<div class="card">
-  <div class="row" style="justify-content: space-between;">
-    <h2 style="margin:0;">Teams</h2>
-    <div class="row">
+<div class="page">
+  <!-- header -->
+  <div class="toolbar">
+    <h1>Teams</h1>
+
+    <div class="controls">
       <input
-        placeholder="Filter by name/city"
-        [(ngModel)]="filter"
-        (ngModelChange)="applyFilter()" />
-      <button class="primary" *ngIf="auth.hasRole(['ADMIN'])" routerLink="/teams/new">
-        + New Team
-      </button>
+        type="text"
+        placeholder="Filter by name / city"
+        [(ngModel)]="query"
+        (ngModelChange)="applyFilter()"
+      />
+
+      <button class="primary" *ngIf="admin" (click)="newTeam()">+ New Team</button>
     </div>
   </div>
 
-  <div *ngIf="loading" style="padding:12px;">Učitavanje…</div>
-  <div *ngIf="error" style="padding:12px; color: var(--danger)">{{ error }}</div>
+  <div *ngIf="loading" class="state">Loading...</div>
+  <div *ngIf="error" class="state error">{{ error }}</div>
 
-  <table *ngIf="!loading && !error">
-    <thead>
-    <tr>
-      <th>Name</th>
-      <th>City</th>
-      <th>Founded</th>
-      <th>#Players</th>
-      <th *ngIf="auth.hasRole(['ADMIN'])" class="actions-col">Actions</th>
-    </tr>
-    </thead>
-    <tbody>
-    <tr *ngFor="let t of view">
-      <td>{{ t.name }}</td>
-      <td>{{ t.city }}</td>
-      <td>{{ t.foundedYear || '—' }}</td>
-      <td>{{ t.playersCount ?? '—' }}</td>
-      <td *ngIf="auth.hasRole(['ADMIN'])" class="actions">
-        <button class="ghost" [routerLink]="['/teams', t.id, 'edit']">Edit</button>
-        <button class="danger" (click)="deleteTeam(t)">Delete</button>
-      </td>
-    </tr>
-    <tr *ngIf="view.length === 0">
-      <td [attr.colspan]="auth.hasRole(['ADMIN']) ? 5 : 4" style="color:var(--muted)">
-        Nema rezultata.
-      </td>
-    </tr>
-    </tbody>
-  </table>
+  <div class="grid" *ngIf="!loading && !error">
+    <div class="card" *ngFor="let t of filtered">
+      <img
+        [src]="teamImg(t.id)"
+        (error)="imgFallback($event, 'team')"
+        alt="logo"
+        class="avatar clickable"
+        (click)="openTeam(t)"
+      />
+
+      <div class="meta">
+        <div class="name link" (click)="openTeam(t)">{{ t.name }}</div>
+        <div class="sub">{{ t.city || '—' }} • Founded {{ t.foundedYear ?? t.foundedYear ?? '—' }}</div>
+      </div>
+
+      <div class="actions" *ngIf="admin">
+        <button
+          class="kebab-btn"
+          (click)="toggleMenu(t.id); $event.stopPropagation()"
+          aria-label="More"
+        >⋮</button>
+
+        <div class="menu" *ngIf="openMenuId === t.id">
+          <button (click)="editTeam(t)">Edit</button>
+          <button class="danger" (click)="deleteTeam(t)">Delete</button>
+        </div>
+      </div>
+    </div>
+
+    <div class="empty" *ngIf="filtered.length === 0">
+      No teams match your filter.
+    </div>
+  </div>
 </div>

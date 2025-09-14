@@ -1,0 +1,43 @@
+<!-- src/app/games/pages/game-create/game-create.component.html -->
+<section class="card">
+  <h2>Schedule Game</h2>
+
+  <form [formGroup]="form" (ngSubmit)="submit()">
+    <div class="grid">
+      <label>
+        <span>Date & Time</span>
+        <input type="datetime-local" formControlName="dateTime"/>
+      </label>
+
+      <label>
+        <span>Season</span>
+        <select formControlName="season">
+          <option *ngFor="let s of seasons" [value]="s">{{ s }}</option>
+        </select>
+      </label>
+
+      <label>
+        <span>Home team</span>
+        <select formControlName="homeTeamId">
+          <option [ngValue]="null">— choose —</option>
+          <option *ngFor="let t of teams" [ngValue]="t.id">{{ t.name }}</option>
+        </select>
+      </label>
+
+      <label>
+        <span>Away team</span>
+        <select formControlName="awayTeamId">
+          <option [ngValue]="null">— choose —</option>
+          <option *ngFor="let t of teams" [ngValue]="t.id">{{ t.name }}</option>
+        </select>
+      </label>
+    </div>
+
+    <div class="error" *ngIf="error">{{ error }}</div>
+
+    <div class="actions">
+      <button type="button" (click)="cancel()">Cancel</button>
+      <button class="primary" [disabled]="saving">Save</button>
+    </div>
+  </form>
+</section>

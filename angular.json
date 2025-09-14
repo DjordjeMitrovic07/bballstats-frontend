@@ -31,16 +31,18 @@
             ],
             "tsConfig": "tsconfig.app.json",
             "assets": [
-              {
-                "glob": "**/*",
-                "input": "public"
-              }
+              "src/favicon.ico",
+              { "glob": "**/*", "input": "src/assets", "output": "assets" },
+              { "glob": "**/*", "input": "public" }
             ],
             "styles": [
               "src/styles.css"
             ],
             "scripts": []
           },
+
+
+
           "configurations": {
             "production": {
               "budgets": [

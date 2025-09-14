@@ -1,0 +1,65 @@
+<!-- src/app/games/pages/game-detail/game-detail.component.html -->
+<section class="card" *ngIf="!loading && !error && game">
+  <h2>Game</h2>
+  <div class="grid">
+    <div>
+      <div class="label">Date & Time</div>
+      <div class="value">{{ game.dateTime | date:'yyyy-MM-dd HH:mm' }}</div>
+    </div>
+    <div class="field">
+      <label>Season</label>
+      <div>{{ seasonText }}</div>
+    </div>
+    <div>
+      <div class="label">Match</div>
+      <div class="value">{{ game.homeTeamName }} vs {{ game.awayTeamName }}</div>
+    </div>
+    <div>
+      <div class="label">Score</div>
+      <div class="value">
+        <ng-container *ngIf="game.homeScore != null && game.awayScore != null; else dash">
+          {{ game.homeScore }} : {{ game.awayScore }}
+        </ng-container>
+        <ng-template #dash>—</ng-template>
+      </div>
+
+      <!-- Jedino dugme (gore) -->
+      <div style="margin-top:8px">
+        <button
+          class="primary"
+          [routerLink]="['/games', game.id, 'boxscores']">
+          Box Scores
+        </button>
+      </div>
+      <!-- /Jedino dugme -->
+    </div>
+  </div>
+
+  <div class="divider"></div>
+
+  <!-- Game Metrics blok – ostaje isto -->
+  <div class="game-metrics">
+    <h3>Game Metrics</h3>
+
+    <div class="metrics-grid-2" *ngIf="homeTeamId && awayTeamId; else noMetrics">
+      <app-team-metrics-card
+        [teamId]="homeTeamId!"
+        [season]="seasonText"
+        [teamName]="game.homeTeamName">
+      </app-team-metrics-card>
+
+      <app-team-metrics-card
+        [teamId]="awayTeamId!"
+        [season]="seasonText"
+        [teamName]="game.awayTeamName">
+      </app-team-metrics-card>
+    </div>
+
+    <ng-template #noMetrics>
+      <div class="muted">No game metrics available yet.</div>
+    </ng-template>
+  </div>
+</section>
+
+<div *ngIf="loading" class="muted">Loading…</div>
+<div *ngIf="!loading && error" class="error">{{ error }}</div>

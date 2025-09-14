@@ -10,9 +10,9 @@ import { PlayerEditComponent } from './pages/player-edit/player-edit.component';
 
 const routes: Routes = [
   { path: '', component: PlayersListComponent },
-  { path: 'new', component: PlayerCreateComponent },     // ADMIN
+  { path: 'create', component: PlayerCreateComponent },    // ← PRE :id!
+  { path: ':id/edit', component: PlayerEditComponent },
   { path: ':id', component: PlayerViewComponent },
-  { path: ':id/edit', component: PlayerEditComponent }   // ADMIN
 ];
 
 @NgModule({

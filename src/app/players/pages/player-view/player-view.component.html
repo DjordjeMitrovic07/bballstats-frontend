@@ -1,19 +1,72 @@
-<div class="card" style="max-width:720px;margin:0 auto;">
-  <h2 style="margin-top:0;">Player</h2>
+<section class="player-view" *ngIf="player as p">
+  <header class="hero">
+    <img class="avatar"
+         [src]="'/assets/players/' + (p.id || 'placeholder') + '.png'"
+         (error)="imgFallback($event)"
+         alt="photo" />
 
-  <div *ngIf="loading">Učitavanje…</div>
+    <div class="meta">
+      <h1>{{ p.firstName }} {{ p.lastName }}</h1>
+      <div class="sub">
+        {{ teamAbbr() }} • {{ p.position || '—' }}
+        <ng-container *ngIf="p.jerseyNumber"> • #{{ p.jerseyNumber }}</ng-container>
+      </div>
+      <div class="bio muted">
+        Height: {{ p.heightCm ? p.heightCm + ' cm' : '—' }} •
+        Weight: {{ p.weightKg ? p.weightKg + ' kg' : '—' }}
+      </div>
+    </div>
+
+    <div class="controls">
+      <select [(ngModel)]="season" (ngModelChange)="onSeasonChange($event)">
+        <option *ngFor="let s of seasons" [value]="s">{{ s }}</option>
+      </select>
+    </div>
+  </header>
+
+  <div *ngIf="loading" class="muted">Loading…</div>
   <div *ngIf="!loading && error" class="error">{{ error }}</div>
 
-  <div *ngIf="!loading && player" class="grid">
-    <div class="field"><label>Name</label><div>{{ (player.firstName || '') + ' ' + (player.lastName || '') }}</div></div>
-    <div class="field"><label>Team</label><div>{{ player.teamName || '—' }}</div></div>
-    <div class="field"><label>Position</label><div>{{ player.position || '—' }}</div></div>
-    <div class="field"><label>Jersey</label><div>{{ player.jerseyNumber ?? '—' }}</div></div>
-    <div class="field"><label>Height</label><div>{{ player.heightCm ? player.heightCm + ' cm' : '—' }}</div></div>
-    <div class="field"><label>Weight</label><div>{{ player.weightKg ? player.weightKg + ' kg' : '—' }}</div></div>
-
-    <div class="actions">
-      <button class="ghost" (click)="back()">Back to list</button>
+  <div *ngIf="!loading && !error">
+    <div class="kpis">
+      <div class="kpi"><div class="label">PPG</div><div class="value">{{ ppg }}</div></div>
+      <div class="kpi"><div class="label">RPG</div><div class="value">{{ rpg }}</div></div>
+      <div class="kpi"><div class="label">APG</div><div class="value">{{ apg }}</div></div>
+      <div class="kpi"><div class="label">eFG%</div><div class="value">{{ (efgPct * 100) | number:'1.0-1' }}%</div></div>
+      <div class="kpi"><div class="label">TS%</div><div class="value">{{ (tsPct  * 100) | number:'1.0-1' }}%</div></div>
     </div>
+
+    <div class="sparkline" *ngIf="spark.length">
+      <div class="bar"
+           *ngFor="let v of spark"
+           [style.height.%]="(v / sparkMax) * 100"
+           [title]="v"></div>
+    </div>
+
+    <h3>Game log — {{ season }}</h3>
+    <table class="games" *ngIf="rows.length; else noRows">
+      <thead>
+      <tr>
+        <th style="width:140px;">Date</th>
+        <th>PTS</th><th>REB</th><th>AST</th>
+        <th>STL</th><th>BLK</th><th>TOV</th>
+        <th>eFG%</th><th>TS%</th>
+      </tr>
+      </thead>
+      <tbody>
+      <tr *ngFor="let r of rows">
+        <td>{{ r.date | date:'yyyy-MM-dd' }}</td>
+        <td>{{ r.pts }}</td>
+        <td>{{ r.reb }}</td>
+        <td>{{ r.ast }}</td>
+        <td>{{ r.stl }}</td>
+        <td>{{ r.blk }}</td>
+        <td>{{ r.tov }}</td>
+        <td>{{ r.efg == null ? '—' : ((r.efg * 100) | number:'1.0-1') + '%' }}</td>
+        <td>{{ r.ts  == null ? '—' : ((r.ts  * 100)  | number:'1.0-1') + '%' }}</td>
+      </tr>
+      </tbody>
+    </table>
+    <ng-template #noRows><div class="muted">No games for this season.</div></ng-template>
   </div>
-</div>
+</section>

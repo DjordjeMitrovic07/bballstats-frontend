@@ -7,6 +7,7 @@ export interface Player {
   heightCm?: number;
   weightKg?: number;
   teamId?: number;
+  team?: { id: number; name: string } | null; // <— dodato
   teamName?: string;
 }
 

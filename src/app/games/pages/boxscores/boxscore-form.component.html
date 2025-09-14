@@ -1,0 +1,70 @@
+<section class="card" *ngIf="!loading">
+  <h2>{{ boxId ? 'Edit Box Score' : 'Add Box Score' }}</h2>
+
+  <div class="muted" *ngIf="game as g">
+    Game: {{ g.homeTeamName }} vs {{ g.awayTeamName }} ({{ g.dateTime | date:'yyyy-MM-dd HH:mm' }})
+  </div>
+
+  <form [formGroup]="form" (ngSubmit)="submit()">
+    <div class="grid">
+      <label>
+        <span>Player</span>
+        <select formControlName="playerId">
+          <option [ngValue]="null">— choose —</option>
+          <option *ngFor="let p of players" [ngValue]="p.id">{{ p.name }} ({{ p.teamName || '—' }})</option>
+        </select>
+      </label>
+
+      <label><span>MIN</span><input type="number" formControlName="min"></label>
+      <label><span>PTS</span><input type="number" formControlName="pts"></label>
+      <label><span>REB</span><input type="number" formControlName="reb"></label>
+      <label><span>AST</span><input type="number" formControlName="ast"></label>
+      <label><span>STL</span><input type="number" formControlName="stl"></label>
+      <label><span>BLK</span><input type="number" formControlName="blk"></label>
+      <label><span>TOV</span><input type="number" formControlName="tov"></label>
+
+      <label>
+        <span>FGM</span>
+        <input type="number" formControlName="fgm">
+        <small class="warn" *ngIf="form.get('fgm')?.errors?.['madeOverAtt']">FGM ≤ FGA</small>
+      </label>
+      <label>
+        <span>FGA</span>
+        <input type="number" formControlName="fga">
+      </label>
+      <label>
+        <span>3PM</span>
+        <input type="number" formControlName="fg3m">
+        <small class="warn" *ngIf="form.get('fg3m')?.errors?.['madeOverAtt']">3PM ≤ 3PA</small>
+      </label>
+      <label>
+        <span>3PA</span>
+        <input type="number" formControlName="fg3a">
+      </label>
+      <label>
+        <span>FTM</span>
+        <input type="number" formControlName="ftm">
+        <small class="warn" *ngIf="form.get('ftm')?.errors?.['madeOverAtt']">FTM ≤ FTA</small>
+      </label>
+      <label>
+        <span>FTA</span>
+        <input type="number" formControlName="fta">
+      </label>
+    </div>
+
+    <!-- live preview eFG / TS -->
+    <div class="quick">
+      <div>eFG%: <b>{{ calcEfg }}</b></div>
+      <div>TS%: <b>{{ calcTs }}</b></div>
+    </div>
+
+    <div class="error" *ngIf="error">{{ error }}</div>
+
+    <div class="actions sticky">
+      <button type="button" class="ghost" (click)="cancel()">Cancel</button>
+      <button class="primary" [disabled]="saving || form.invalid">{{ boxId ? 'Save' : 'Create' }}</button>
+    </div>
+  </form>
+</section>
+
+<div *ngIf="loading" class="muted">Loading…</div>

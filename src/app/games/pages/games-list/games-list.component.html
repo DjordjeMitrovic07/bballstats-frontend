@@ -1,0 +1,49 @@
+<section class="card">
+  <header class="card-head">
+    <h2>Games</h2>
+    <div class="actions">
+      <select
+        class="season"
+        [ngModel]="season.selected()"
+        (ngModelChange)="onSeasonChange($event)">
+        <option *ngFor="let s of seasons" [value]="s">{{ s }}</option>
+      </select>
+
+      <input
+        class="search"
+        placeholder="Filter by teams / season"
+        [(ngModel)]="filter"
+        (input)="applyFilter()" />
+
+      <button class="primary" *ngIf="admin" (click)="goNew()">+ New Game</button>
+    </div>
+  </header>
+
+  <div *ngIf="loading" class="muted">Loading…</div>
+  <div *ngIf="!loading && error" class="error">{{ error }}</div>
+  <div *ngIf="!loading && !error && view.length === 0" class="muted">No games.</div>
+
+  <table *ngIf="!loading && !error && view.length">
+    <thead>
+    <tr>
+      <th style="width:200px;">Date/Time</th>
+      <th>Match</th>
+      <th style="width:120px;">Season</th>
+      <th style="width:120px;">Score</th>
+    </tr>
+    </thead>
+    <tbody>
+    <tr *ngFor="let g of view" (click)="open(g)">
+      <td>{{ g.dateTime | date:'yyyy-MM-dd HH:mm' }}</td>
+      <td>{{ g.homeTeamName }} vs {{ g.awayTeamName }}</td>
+      <td>{{ g.season }}</td>
+      <td>
+        <ng-container *ngIf="g.homeScore != null && g.awayScore != null; else dash">
+          {{ g.homeScore }} : {{ g.awayScore }}
+        </ng-container>
+        <ng-template #dash>—</ng-template>
+      </td>
+    </tr>
+    </tbody>
+  </table>
+</section>

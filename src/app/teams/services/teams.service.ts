@@ -19,6 +19,11 @@ export class TeamsService {
     );
   }
 
+  // ⬇⬇⬇ DODAJ OVO
+  getAll(): Observable<Team[]> {
+    return this.list();
+  }
+
   get(id: number): Observable<Team> {
     return this.api.get<Team>(`/api/teams/${id}`);
   }

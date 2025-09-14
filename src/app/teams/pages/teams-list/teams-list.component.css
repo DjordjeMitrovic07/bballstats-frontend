@@ -1,40 +1,112 @@
-:host { display: block; }
+.page { padding: 16px 0; }
 
-/* zaglavlje kartice (filter + dugme) */
-.card > .row { margin-bottom: 12px; }
-
-/* filter input i dugme */
-.card > .row input { width: 260px; }
-.card > .row button { height: 38px; }
-
-/* tabela – hover i razmak */
-table tbody tr:hover { background: rgba(255,255,255,0.02); }
-td, th { padding-top: 12px; padding-bottom: 12px; }
-
-/* kolona Actions */
-.actions-col { text-align: right; }
-td.actions {
+/* header: title left, controls right */
+.toolbar {
   display: flex;
-  justify-content: flex-end;
-  gap: 8px;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+  margin-bottom: 16px;
 }
 
-/* dugmad */
-button.ghost {
-  background: transparent;
-  border-color: #1f2a44;
-}
-button.danger {
-  background: var(--danger);
-  border-color: var(--danger);
-  color: #fff;
+.controls {
+  display: flex;
+  align-items: center;
+  gap: 12px;
 }
 
-/* “Nema rezultata.” centriraj */
-td[colspan] { text-align: center; padding: 20px 8px; color: var(--muted); }
-
-/* mobilno */
-@media (max-width: 520px) {
-  .card > .row { gap: 8px; }
-  .card > .row input, .card > .row button { width: 100%; }
+.controls input {
+  height: 36px;
+  padding: 0 10px;
+  border-radius: 8px;
+  border: 1px solid #2a2f3a;
+  background: #0f1420;
+  color: #eaeef7;
+  min-width: 240px;
 }
+
+.primary {
+  height: 36px;
+  padding: 0 12px;
+  border-radius: 10px;
+  border: none;
+  background: #3567ff;
+  color: white;
+  font-weight: 600;
+}
+
+/* grid: 3 cards in a row, responsive */
+.grid {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 16px;
+}
+
+/* Tablet */
+@media (max-width: 1100px) {
+  .grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+}
+/* Phone */
+@media (max-width: 720px) {
+  .grid { grid-template-columns: 1fr; }
+}
+
+/* compact card */
+.card {
+  position: relative;
+  display: grid;
+  grid-template-columns: 80px 1fr auto;
+  align-items: center;
+  gap: 12px;
+  padding: 14px;
+  border-radius: 16px;
+  background: #0d1320;
+  border: 1px solid #1e2430;
+  min-height: 96px;
+}
+
+.avatar {
+  width: 80px; height: 80px;
+  border-radius: 12px;
+  object-fit: contain;
+  background: #0a1020;
+}
+
+.meta .name { font-weight: 700; font-size: 18px; }
+.meta .sub  { opacity: 0.8; font-size: 13px; margin-top: 2px; }
+
+.kebab-btn {
+  width: 34px; height: 34px;
+  border-radius: 10px;
+  background: #121a2b;
+  border: 1px solid #242a38;
+  color: #c8d0e5;
+}
+
+.actions { position: relative; }
+
+.menu {
+  position: absolute; top: 40px; right: 0;
+  background: #0f1629; border: 1px solid #262f45;
+  border-radius: 10px; padding: 8px; z-index: 2;
+  display: flex; flex-direction: column; gap: 6px;
+}
+
+.menu button {
+  background: transparent; border: none; color: #e7ecff;
+  text-align: left; padding: 6px 8px; border-radius: 6px;
+}
+.menu button:hover { background: #1b2236; }
+.menu .danger { color: #ff6b6b; }
+
+.state { opacity: 0.8; padding: 8px 2px; }
+.state.error { color: #ff6b6b; }
+
+.empty {
+  grid-column: 1 / -1;
+  text-align: center; opacity: .8; padding: 12px 0;
+}
+/* klikabilno ime/slika */
+.clickable,
+.name.link { cursor: pointer; }
+.name.link:hover { text-decoration: underline; }

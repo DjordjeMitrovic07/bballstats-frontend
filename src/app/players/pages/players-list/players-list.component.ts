@@ -1,104 +1,183 @@
-import { Component, OnDestroy, OnInit } from '@angular/core';
-import { PlayersService } from '../../services/players.service';
-import { Player } from '../../../core/models/player.model';
-import { finalize } from 'rxjs/operators';
-import { Subscription } from 'rxjs';
-import { SeasonService } from '../../../core/services/season.service';
-import { AuthService } from '../../../core/services/auth.service';
+import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
+import { forkJoin } from 'rxjs';
+
+import { Player } from '../../../core/models/player.model';
+import { Team } from '../../../core/models/team.model';
+import { PlayersService } from '../../services/players.service';
+import { TeamsService } from '../../../teams/services/teams.service';
+import { AuthService } from '../../../core/services/auth.service';
 
 @Component({
   selector: 'app-players-list',
+  standalone: false,
   templateUrl: './players-list.component.html',
   styleUrls: ['./players-list.component.css'],
-  standalone: false
 })
-export class PlayersListComponent implements OnInit, OnDestroy {
-  loading = true;
+export class PlayersListComponent implements OnInit {
+  // UI state
+  query = '';
+  loading = false;
   error: string | null = null;
 
-  filter = '';
-  data: Player[] = [];
-  view: Player[] = [];
+  // data
+  players: Player[] = [];
+  filtered: Player[] = [];
 
+  // timovi za lookup po id-u
+  private teamIndex: Map<number, Team> = new Map<number, Team>();
+
+  // admin / menu
+  isAdmin = false; // biće postavljeno iz AuthService u ngOnInit
   get admin(): boolean {
-    const a: any = this.auth as any;
-    if (typeof a.isAdmin === 'function') return a.isAdmin();
-    if (typeof a.isAdmin === 'boolean') return a.isAdmin;
-    return (a.role ?? a.user?.role) === 'ADMIN';
+    return this.isAdmin;
   }
+  openMenuId: number | null = null;
 
-  private sub?: Subscription;
+  // ručni sinonimi -> skraćenice
+  private teamAbbrMap: Record<string, string> = {
+    'los angeles lakers': 'LAL',
+    'boston celtics': 'BOS',
+    'golden state warriors': 'GSW',
+    'partizan': 'PAR',
+    'celtics': 'BOS',
+    'lakers': 'LAL',
+    'warriors': 'GSW',
+  };
 
   constructor(
-    private players: PlayersService,
-    private season: SeasonService,
-    public auth: AuthService,
-    private router: Router
+    private playersSvc: PlayersService,
+    private teamsSvc: TeamsService,
+    private router: Router,
+    public auth: AuthService
   ) {}
 
   ngOnInit(): void {
-    this.sub = this.season.season$.subscribe(() => this.fetch());
-    this.fetch();
+    // odredi admin flag (da user ne vidi +New / kebab)
+    this.isAdmin = this.computeAdmin();
+    this.load();
   }
 
-  ngOnDestroy(): void {
-    this.sub?.unsubscribe();
+  private computeAdmin(): boolean {
+    const a: any = this.auth as any;
+    if (typeof a.isAdmin === 'function') return !!a.isAdmin();
+    if (typeof a.isAdmin === 'boolean') return a.isAdmin === true;
+    const role = a.role ?? a.user?.role;
+    return role === 'ADMIN';
   }
 
-  /** Učitaj sa servera i osveži prikaz */
-  fetch(): void {
+  load(): void {
     this.loading = true;
     this.error = null;
 
-    this.players.list()
-      .pipe(finalize(() => (this.loading = false)))
-      .subscribe({
-        next: rows => {
-          this.data = rows ?? [];
-          this.applyFilter();
-        },
-        error: err => {
-          this.error = err?.error?.message || 'Greška pri učitavanju igrača.';
+    forkJoin([this.playersSvc.list(), this.teamsSvc.list()]).subscribe({
+      next: ([plist, tlist]) => {
+        this.players = Array.isArray(plist) ? plist : [];
+
+        const teams = Array.isArray(tlist) ? tlist : [];
+
+        // TIP-SAFE: prvo izvučemo brojčani id, pa guramo tuple [number, Team]
+        const kv: [number, Team][] = [];
+        for (const t of teams) {
+          const id = t?.id;
+          if (typeof id === 'number') {
+            kv.push([id, t]); // id je sada čist number
+          }
         }
-      });
+        this.teamIndex = new Map<number, Team>(kv);
+
+        this.applyFilter();
+        this.loading = false;
+      },
+      error: (err) => {
+        console.error('Players load failed', err);
+        this.error = 'Failed to load players.';
+        this.loading = false;
+      },
+    });
   }
 
-  /** Lokalni filter preko unetog teksta */
   applyFilter(): void {
-    const q = this.filter.trim().toLowerCase();
-    this.view = !q ? this.data.slice() : this.data.filter(p => {
-      const full = `${p.firstName ?? ''} ${p.lastName ?? ''}`.toLowerCase();
-      return full.includes(q)
-        || (p.teamName ?? '').toLowerCase().includes(q)
-        || (p.position ?? '').toLowerCase().includes(q);
+    const q = (this.query || '').toLowerCase().trim();
+    if (!q) {
+      this.filtered = [...this.players];
+      return;
+    }
+    this.filtered = this.players.filter((p) => {
+      const fullName = ((p.firstName || '') + ' ' + (p.lastName || '')).toLowerCase();
+      const teamName = (this.playerTeamName(p) || '').toLowerCase();
+      const pos = (p.position || '').toLowerCase();
+      return fullName.includes(q) || teamName.includes(q) || pos.includes(q);
     });
   }
 
-  /** Poziva se iz inputa – samo primeni lokalni filter */
-  search(): void {
-    this.applyFilter();
+  // ====== TEAM ABBR / NAME HELPERS ======
+  private abbrFromName(name: string): string {
+    const parts = name.trim().split(/\s+/).filter(Boolean);
+    if (!parts.length) return '';
+    if (parts.length === 1) return parts[0].slice(0, 3).toUpperCase();
+    const initials = parts.map((p) => p[0]).join('');
+    return initials.slice(0, 4).toUpperCase();
   }
 
-  fullName(p: Player): string {
-    return `${p.firstName ?? ''} ${p.lastName ?? ''}`.trim();
+  private playerTeamName(p: Player): string {
+    // probaj redom: relation -> polje teamName -> lookup po teamId
+    const viaRel = (p as any)?.team?.name as string | undefined;
+    if (viaRel) return viaRel;
+
+    const viaField = (p as any)?.teamName as string | undefined;
+    if (viaField) return viaField;
+
+    if (typeof p.teamId === 'number' && this.teamIndex.has(p.teamId)) {
+      return this.teamIndex.get(p.teamId)!.name || '';
+    }
+    return '';
   }
 
-  goNew(): void { this.router.navigate(['/players/new']); }
-  goEdit(p: Player): void { this.router.navigate(['/players', p.id, 'edit']); }
-  open(p: Player): void { this.router.navigate(['/players', p.id]); }
+  playerTeamAbbr(p: Player): string {
+    const name = this.playerTeamName(p);
+    if (!name) return '';
+    const key = name.toLowerCase();
+    if (this.teamAbbrMap[key]) return this.teamAbbrMap[key];
+    return this.abbrFromName(name);
+  }
 
-  /** Brisanje pa ponovno učitavanje liste */
-  remove(p: Player, e: Event): void {
-    e.stopPropagation();
-    if (!confirm(`Delete ${p.firstName} ${p.lastName}?`)) return;
+  // ====== images ======
+  playerImg(id?: number): string {
+    return id ? `/assets/players/${id}.png` : '/assets/players/placeholder.png';
+  }
+  imgFallback(ev: Event, _kind: 'player'): void {
+    (ev.target as HTMLImageElement).src = '/assets/players/placeholder.png';
+  }
 
-    this.players.delete(p.id!).subscribe({
-      next: () => this.fetch(),
-      error: err => {
-        const msg = err?.error?.message || 'Delete failed.';
-        alert(msg);
-      }
+  // ====== kebab menu ======
+  toggleMenu(id: number): void {
+    this.openMenuId = this.openMenuId === id ? null : id;
+  }
+
+  // ====== actions ======
+  editPlayer(p: Player): void {
+    if (!p.id) return;
+    void this.router.navigate(['/players', p.id, 'edit']); // utišava lint poruku
+  }
+
+  deletePlayer(p: Player): void {
+    if (!p.id) return;
+    if (!confirm(`Delete player "${p.firstName} ${p.lastName}"?`)) return;
+
+    this.playersSvc.delete(p.id).subscribe({
+      next: () => {
+        this.players = this.players.filter((x) => x.id !== p.id);
+        this.applyFilter();
+      },
+      error: (err) => {
+        console.error('Delete player failed', err);
+        alert('Failed to delete player.');
+      },
     });
+  }
+
+  newPlayer(): void {
+    void this.router.navigate(['/players/create']); // utišava lint poruku
   }
 }

@@ -1,15 +1,78 @@
-button.ghost {
-  background: transparent;
-  border: 1px solid #1f2a44;
-  color: #c9d1e3;
-  padding: 6px 10px;
-  border-radius: 8px;
-  margin-right: 6px;
+.page { padding: 16px 0; }
+
+.toolbar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+  margin-bottom: 16px;
 }
-button.danger {
-  background: transparent;
-  border: 1px solid #a63a3a;
-  color: #ffb3b3;
-  padding: 6px 10px;
-  border-radius: 8px;
+
+.controls { display: flex; align-items: center; gap: 12px; }
+.controls input {
+  height: 36px; padding: 0 10px; min-width: 280px;
+  border-radius: 8px; border: 1px solid #2a2f3a;
+  background: #0f1420; color: #eaeef7;
 }
+.primary {
+  height: 36px; padding: 0 12px;
+  border-radius: 10px; border: none;
+  background: #3567ff; color: white; font-weight: 600;
+}
+
+/* 3 kolone, responsive */
+.grid {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 16px;
+}
+@media (max-width: 1100px) { .grid { grid-template-columns: repeat(2, minmax(0, 1fr)); } }
+@media (max-width: 720px)  { .grid { grid-template-columns: 1fr; } }
+
+/* kompaktna kartica */
+.card {
+  position: relative;
+  display: grid;
+  grid-template-columns: 96px 1fr auto;
+  align-items: center;
+  gap: 12px;
+  padding: 14px;
+  border-radius: 16px;
+  background: #0d1320;
+  border: 1px solid #1e2430;
+  min-height: 110px;
+}
+
+.avatar {
+  width: 96px; height: 96px;
+  border-radius: 12px;
+  object-fit: cover;
+  background: #0a1020;
+}
+
+.meta .name { font-weight: 700; font-size: 18px; }
+.meta .sub  { opacity: 0.8; font-size: 13px; margin-top: 2px; }
+
+.kebab-btn {
+  width: 34px; height: 34px;
+  border-radius: 10px;
+  background: #121a2b;
+  border: 1px solid #242a38;
+  color: #c8d0e5;
+}
+
+.actions { position: relative; }
+.menu {
+  position: absolute; top: 40px; right: 0;
+  background: #0f1629; border: 1px solid #262f45;
+  border-radius: 10px; padding: 8px; z-index: 2;
+  display: flex; flex-direction: column; gap: 6px;
+}
+.menu button { background: transparent; border: none; color: #e7ecff; text-align: left; padding: 6px 8px; border-radius: 6px; }
+.menu button:hover { background: #1b2236; }
+.menu .danger { color: #ff6b6b; }
+
+.state { opacity: .8; padding: 8px 2px; }
+.state.error { color: #ff6b6b; }
+
+.empty { grid-column: 1 / -1; text-align: center; opacity: .8; padding: 12px 0; }

@@ -10,16 +10,6 @@
 
   <div class="grow"></div>
 
-  <!-- WIP: global search -->
-  <input class="search" placeholder="Search (player/team) — WIP" />
-
-  <!-- sezona -->
-  <select class="season"
-          [ngModel]="season.selected()"
-          (ngModelChange)="onSeasonChange($event)">
-    <option *ngFor="let s of seasons" [value]="s">{{ s }}</option>
-  </select>
-
   <span class="user">{{ auth.email }}</span>
-  <button class="primary" (click)="auth.logout()">Logout</button>
+  <button class="primary" (click)="logout()">Logout</button>
 </header>

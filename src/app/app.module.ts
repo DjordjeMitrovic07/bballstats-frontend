@@ -10,6 +10,12 @@ import { CoreModule } from './core/core.module';
 import { SharedModule } from './shared/shared.module';
 import { TokenInterceptor } from './core/interceptors/token.interceptor';
 
+import { MetricsHomeComponent } from './metrics/pages/metrics-home/metrics-home.component';
+import { LeaderboardComponent } from './metrics/components/leaderboard/leaderboard.component';
+import { MetricsModule } from './metrics/metrics.module';
+
+
+
 @NgModule({
   declarations: [AppComponent],
   imports: [
@@ -19,7 +25,8 @@ import { TokenInterceptor } from './core/interceptors/token.interceptor';
     ReactiveFormsModule,
     CoreModule,
     SharedModule,
-    AppRoutingModule
+    AppRoutingModule,
+    MetricsModule,
   ],
   providers: [
     { provide: HTTP_INTERCEPTORS, useClass: TokenInterceptor, multi: true }

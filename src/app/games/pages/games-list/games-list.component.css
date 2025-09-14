@@ -1,0 +1,11 @@
+/* src/app/games/pages/games-list/games-list.component.css */
+.card { background:#0f1624; border-radius:14px; padding:16px; }
+.card-head { display:flex; align-items:center; justify-content:space-between; margin-bottom:12px; }
+.actions { display:flex; gap:8px; }
+.search { padding:8px 10px; border-radius:10px; background:#0b1220; border:1px solid #1f2a44; color:#cfe3ff; width:260px; }
+.primary { padding:8px 12px; border-radius:10px; background:#2d5bff; color:#fff; border:0; }
+table { width:100%; border-collapse:collapse; }
+th, td { padding:10px 12px; border-top:1px solid #1f2a44; }
+tr:hover { background:#0b1220; cursor:pointer; }
+.muted { color:#9bb3d1; }
+.error { color:#ff6b6b; }
