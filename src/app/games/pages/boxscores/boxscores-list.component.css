@@ -1,0 +1,30 @@
+.card { background:#0f1624; border-radius:14px; padding:16px; }
+
+.card-head { display:flex; align-items:center; justify-content:space-between; gap:12px; margin-bottom:12px; }
+.actions { display:flex; gap:8px; align-items:center; flex-wrap:wrap; }
+
+.search { padding:8px 10px; border-radius:10px; background:#0b1220; border:1px solid #1f2a44; color:#cfe3ff; width:240px; }
+
+.primary { padding:8px 12px; border-radius:10px; background:#2d5bff; color:#fff; border:0; }
+.ghost { padding:6px 10px; border-radius:10px; background:transparent; border:1px solid #1f2a44; color:#cfe3ff; }
+.danger { padding:6px 10px; border-radius:10px; background:#ff4d4f; color:#fff; border:0; }
+
+.muted { color:#9bb3d1; margin-bottom:8px; }
+.error { color:#ff6b6b; }
+
+table { width:100%; border-collapse:collapse; }
+th, td { padding:10px 12px; border-top:1px solid #1f2a44; }
+.actions-td { display:flex; gap:8px; }
+
+/* segment (All / Home / Away) */
+.seg { display:inline-flex; background:#0b1220; border:1px solid #1f2a44; border-radius:10px; overflow:hidden; }
+.seg button {
+  padding:6px 10px; background:transparent; color:#cfe3ff; border:0; cursor:pointer;
+}
+.seg button.active { background:#20304d; font-weight:600; }
+
+/* Totals */
+.totals { margin-top:14px; display:grid; gap:8px; }
+.tot { background:#0b1220; border:1px solid #1f2a44; border-radius:10px; padding:10px 12px; }
+.tot .label { color:#9bb3d1; font-weight:600; margin-bottom:6px; }
+.tot .vals { color:#cfe3ff; font-variant-numeric: tabular-nums; }

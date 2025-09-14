@@ -1,0 +1,20 @@
+<!-- src/app/metrics/components/team-metrics-card/team-metrics-card.component.html -->
+<div class="team-metrics-card">
+  <div class="title">
+    <ng-container *ngIf="teamName; else plainTitle">
+      {{ teamName }} — {{ season || '—' }}
+    </ng-container>
+    <ng-template #plainTitle>Team Metrics — {{ season || '—' }}</ng-template>
+  </div>
+
+  <div *ngIf="loading" class="muted">Loading…</div>
+  <div *ngIf="!loading && error" class="error">{{ error }}</div>
+
+  <ul class="metrics" *ngIf="!loading && !error">
+    <li><span>Pace</span><span class="v">{{ pace | number:'1.1-1' }}</span></li>
+    <li><span>Off Rating</span><span class="v">{{ ortg | number:'1.1-1' }} <small>per 100</small></span></li>
+    <li><span>Def Rating</span><span class="v">{{ drtg | number:'1.1-1' }} <small>per 100</small></span></li>
+    <li><span>eFG%</span><span class="v">{{ pct(efg) }}</span></li>
+    <li><span>TS%</span><span class="v">{{ pct(ts) }}</span></li>
+  </ul>
+</div>

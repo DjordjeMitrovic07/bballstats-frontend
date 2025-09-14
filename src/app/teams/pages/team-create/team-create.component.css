@@ -1,0 +1,52 @@
+:host {
+  display: block;
+}
+
+.card {
+  margin: 24px auto;
+}
+
+form.row {
+  display: grid;
+  gap: 12px;
+}
+
+/* inputs */
+input {
+  width: 100%;
+}
+
+/* invalid state */
+input.ng-invalid.ng-touched {
+  border-color: var(--danger);
+  box-shadow: 0 0 0 2px rgba(239, 68, 68, .2);
+  outline: none;
+}
+
+/* error text */
+.error {
+  color: var(--danger);
+  font-size: 14px;
+}
+
+/* actions */
+button {
+  align-self: start;
+}
+
+/* responsive 2-col layout, dugme preko cele širine grida */
+@media (min-width: 560px) {
+  form.row {
+    grid-template-columns: 1fr 1fr;
+  }
+  input[placeholder="Founded year (opciono)"] {
+    grid-column: 1 / 2; /* ostaje u prvoj koloni; prilagodi po želji */
+  }
+  button.primary {
+    grid-column: 1 / -1;
+    width: fit-content;
+  }
+  .error {
+    grid-column: 1 / -1;
+  }
+}

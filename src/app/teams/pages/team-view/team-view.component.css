@@ -1,0 +1,50 @@
+.page { padding: 16px 0 24px; }
+.muted { opacity: .8; }
+.error { color: #ff6b6b; }
+
+.header {
+  display: flex; align-items: center; gap: 16px; margin-bottom: 16px;
+}
+.logo { width: 80px; height: 80px; border-radius: 12px; object-fit: contain; background:#0a1020; }
+.title h1 { margin: 0; font-size: 28px; }
+.title .sub { opacity: .8; margin-top: 2px; }
+
+.season {
+  height: 36px; padding: 0 10px; border-radius: 8px;
+  background: #0f1420; color: #eaeef7; border: 1px solid #2a2f3a;
+}
+.grow { flex: 1 1 auto; }
+
+/* KPI */
+.kpi {
+  display: grid; grid-template-columns: repeat(3, minmax(0,1fr)); gap: 12px; margin: 12px 0 20px;
+}
+.kpi .card {
+  background: #0d1320; border: 1px solid #1e2430; border-radius: 14px;
+  padding: 16px; min-height: 82px;
+}
+.kpi .k { opacity: .8; margin-bottom: 6px; }
+.kpi .v { font-size: 26px; font-weight: 800; }
+
+/* Table */
+.block-title { margin: 18px 0 8px; }
+.tbl { width: 100%; border-collapse: collapse; }
+.tbl th, .tbl td { padding: 10px 12px; border-bottom: 1px solid #1e2430; }
+.badge {
+  display:inline-block; min-width:32px; text-align:center; padding:2px 8px; border-radius: 999px; background:#20293c;
+}
+.badge.win { background:#0f3b1e; color:#7dffa7; }
+.badge.loss { background:#3b1111; color:#ff9f9f; }
+
+/* Roster */
+.roster { display:grid; grid-template-columns: repeat(4, minmax(0,1fr)); gap:12px; margin-top:8px; }
+@media (max-width: 1100px){ .roster{ grid-template-columns: repeat(3, minmax(0,1fr)); } }
+@media (max-width: 720px){ .roster{ grid-template-columns: repeat(2, minmax(0,1fr)); } }
+
+.player {
+  background:#0d1320; border:1px solid #1e2430; border-radius:14px; padding:12px; cursor:pointer;
+  display:grid; grid-template-columns:56px 1fr; gap:10px; align-items:center;
+}
+.player img { width:56px; height:56px; border-radius:10px; object-fit:cover; background:#0a1020; }
+.player .name { font-weight:700; }
+.player .meta { opacity:.8; font-size: 13px; margin-top: 2px; }

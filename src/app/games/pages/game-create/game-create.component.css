@@ -1,0 +1,8 @@
+/* src/app/games/pages/game-create/game-create.component.css */
+.card { background:#0f1624; border-radius:14px; padding:16px; max-width:860px; }
+.grid { display:grid; grid-template-columns: 1fr 1fr; gap:14px; }
+label { display:flex; flex-direction:column; gap:6px; }
+input, select { padding:10px; border-radius:10px; background:#0b1220; border:1px solid #1f2a44; color:#cfe3ff; }
+.actions { display:flex; justify-content:flex-end; gap:8px; margin-top:14px; }
+.primary { padding:8px 12px; border-radius:10px; background:#2d5bff; color:#fff; border:0; }
+.error { color:#ff6b6b; margin-top:8px; }

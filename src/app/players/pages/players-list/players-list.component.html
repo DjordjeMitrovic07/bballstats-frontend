@@ -1,0 +1,57 @@
+<div class="page">
+  <div class="toolbar">
+    <h1>Players</h1>
+
+    <div class="controls">
+      <input
+        type="text"
+        placeholder="Filter by name / team / position"
+        [(ngModel)]="query"
+        (ngModelChange)="applyFilter()"
+      />
+      <button class="primary" *ngIf="admin" (click)="newPlayer()">+ New Player</button>
+    </div>
+  </div>
+
+  <div *ngIf="loading" class="state">Loading...</div>
+  <div *ngIf="error" class="state error">{{ error }}</div>
+
+  <div class="grid" *ngIf="!loading && !error">
+    <div class="card" *ngFor="let p of filtered">
+      <!-- Slika -> klik vodi na profil -->
+      <a [routerLink]="['/players', p.id]" class="avatar-link" (click)="$event.stopPropagation()">
+        <img
+          [src]="playerImg(p.id)"
+          (error)="imgFallback($event, 'player')"
+          alt="photo"
+          class="avatar"
+        />
+      </a>
+
+      <div class="meta">
+        <!-- Ime -> klik vodi na profil -->
+        <a class="name" [routerLink]="['/players', p.id]" (click)="$event.stopPropagation()">
+          {{ p.firstName }} {{ p.lastName }}
+        </a>
+
+        <div class="sub" [title]="playerTeamAbbr(p)">
+          {{ playerTeamAbbr(p) || '—' }}
+          • {{ p.position || '—' }}
+          <ng-container *ngIf="p.jerseyNumber != null"> • #{{ p.jerseyNumber }}</ng-container>
+        </div>
+      </div>
+
+      <div class="actions" *ngIf="admin">
+        <button class="kebab-btn" (click)="toggleMenu(p.id); $event.stopPropagation()">⋮</button>
+        <div class="menu" *ngIf="openMenuId === p.id">
+          <button (click)="editPlayer(p)">Edit</button>
+          <button class="danger" (click)="deletePlayer(p)">Delete</button>
+        </div>
+      </div>
+    </div>
+
+    <div class="empty" *ngIf="filtered.length === 0">
+      No players match your filter.
+    </div>
+  </div>
+</div>

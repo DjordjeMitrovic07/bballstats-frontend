@@ -1,0 +1,18 @@
+/* src/app/metrics/components/game-metrics-card/game-metrics-card.component.css */
+.card { background:#0f1824; border-radius:16px; padding:16px; }
+.card-title { font-weight:600; margin-bottom:12px; color:#cfe3ff; }
+.muted { opacity:.7; }
+.error { color:#ff6b6b; }
+
+.grid { display:grid; grid-template-columns: 1fr 1fr; gap:16px; }
+.col { background:#0b1320; border-radius:12px; padding:12px; }
+
+.hdr { display:flex; gap:10px; align-items:center; margin-bottom:8px; }
+.hdr img { width:36px; height:36px; border-radius:8px; background:#0a0f18; }
+.name { font-weight:600; }
+
+.list { list-style:none; padding:0; margin:0; display:flex; flex-direction:column; gap:6px; }
+.list li { display:flex; justify-content:space-between; align-items:center; border-bottom:1px solid rgba(255,255,255,0.06); padding:6px 0; }
+.list li:last-child { border-bottom:none; }
+.v { font-variant-numeric: tabular-nums; }
+.v small { opacity:.6; margin-left:4px; }

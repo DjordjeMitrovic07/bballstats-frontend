@@ -1,0 +1,59 @@
+<div class="card form-card">
+  <div class="row" style="justify-content: space-between;">
+    <h2 style="margin:0;">New Player</h2>
+  </div>
+
+  <div *ngIf="error" class="error">{{ error }}</div>
+
+  <form [formGroup]="form" (ngSubmit)="submit()">
+    <div class="grid">
+      <div class="field">
+        <label>First name</label>
+        <input formControlName="firstName" />
+        <small *ngIf="form.get('firstName')?.invalid && form.get('firstName')?.touched">Required</small>
+      </div>
+
+      <div class="field">
+        <label>Last name</label>
+        <input formControlName="lastName" />
+        <small *ngIf="form.get('lastName')?.invalid && form.get('lastName')?.touched">Required</small>
+      </div>
+
+      <div class="field">
+        <label>Team</label>
+        <select formControlName="teamId">
+          <option [ngValue]="null">—</option>
+          <option *ngFor="let t of teams" [ngValue]="t.id">{{ t.name }}</option>
+        </select>
+      </div>
+
+      <div class="field">
+        <label>Position</label>
+        <select formControlName="position">
+          <option [ngValue]="''">—</option>
+          <option *ngFor="let p of positions" [ngValue]="p">{{ p }}</option>
+        </select>
+      </div>
+
+      <div class="field">
+        <label>Jersey</label>
+        <input type="number" formControlName="jerseyNumber" />
+      </div>
+
+      <div class="field">
+        <label>Height (cm)</label>
+        <input type="number" formControlName="heightCm" />
+      </div>
+
+      <div class="field">
+        <label>Weight (kg)</label>
+        <input type="number" formControlName="weightKg" />
+      </div>
+    </div>
+
+    <div class="actions">
+      <button type="button" class="ghost" (click)="cancel()">Cancel</button>
+      <button type="submit" class="primary" [disabled]="loading || form.invalid">Save</button>
+    </div>
+  </form>
+</div>

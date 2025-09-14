@@ -1,0 +1,31 @@
+:host { display: block; }
+.card { margin: 24px auto; }
+
+/* grid forma */
+form.row { display: grid; gap: 12px; }
+input { width: 100%; }
+
+input.ng-invalid.ng-touched {
+  border-color: var(--danger);
+  box-shadow: 0 0 0 2px rgba(239, 68, 68, .2);
+  outline: none;
+}
+
+.error { color: var(--danger); font-size: 14px; }
+
+.actions {
+  display: flex;
+  gap: 10px;
+  justify-content: flex-end;
+}
+
+button.ghost {
+  background: transparent;
+  border-color: #1f2a44;
+}
+
+@media (min-width: 560px) {
+  form.row { grid-template-columns: 1fr 1fr; }
+  input[type="number"] { grid-column: 1 / 2; }
+  .actions, .error { grid-column: 1 / -1; }
+}

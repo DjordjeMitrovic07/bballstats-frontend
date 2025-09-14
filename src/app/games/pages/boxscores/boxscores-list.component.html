@@ -1,0 +1,91 @@
+<section class="card">
+  <header class="card-head">
+    <h2>Box Scores</h2>
+    <div class="actions">
+      <div class="seg">
+        <button [class.active]="teamFilter==='all'" (click)="teamFilter='all'; applyFilter()">All</button>
+        <button [class.active]="teamFilter==='home'" (click)="teamFilter='home'; applyFilter()">
+          {{ abbrOf(game?.homeTeamName) }}
+        </button>
+        <button [class.active]="teamFilter==='away'" (click)="teamFilter='away'; applyFilter()">
+          {{ abbrOf(game?.awayTeamName) }}
+        </button>
+      </div>
+
+      <input
+        class="search"
+        placeholder="Filter by player / team"
+        [(ngModel)]="filter"
+        (input)="applyFilter()"
+      />
+      <button class="ghost" (click)="exportCsv()">Export CSV</button>
+      <button class="primary" *ngIf="admin" (click)="newBox()">+ Add</button>
+    </div>
+  </header>
+
+  <div class="muted" *ngIf="game as g">
+    Game: {{ g.homeTeamName }} vs {{ g.awayTeamName }} ({{ g.dateTime | date:'yyyy-MM-dd HH:mm' }})
+  </div>
+
+  <div *ngIf="loading" class="muted">Loading…</div>
+  <div *ngIf="!loading && error" class="error">{{ error }}</div>
+
+  <table *ngIf="!loading && !error && view.length">
+    <thead>
+    <tr>
+      <th>Player</th>
+      <th>Team</th>
+      <th>MIN</th>
+      <th>PTS</th>
+      <th>REB</th>
+      <th>AST</th>
+      <th>STL</th>
+      <th>BLK</th>
+      <th>TOV</th>
+      <th>eFG%</th>
+      <th>TS%</th>
+      <th *ngIf="admin" style="width:120px;"></th>
+    </tr>
+    </thead>
+    <tbody>
+    <tr *ngFor="let r of view">
+      <td>{{ r.playerName }}</td>
+      <td>{{ teamAbbr(r) }}</td>
+      <td>{{ r.min }}</td>
+      <td>{{ r.pts }}</td>
+      <td>{{ r.reb }}</td>
+      <td>{{ r.ast }}</td>
+      <td>{{ r.stl }}</td>
+      <td>{{ r.blk }}</td>
+      <td>{{ r.tov }}</td>
+      <td>{{ r.efg == null ? '—' : ((r.efg * 100) | number:'1.1-1') + '%' }}</td>
+      <td>{{ r.ts  == null ? '—' : ((r.ts  * 100) | number:'1.1-1') + '%' }}</td>
+      <td *ngIf="admin" class="actions-td">
+        <button class="ghost" (click)="edit(r)">Edit</button>
+        <button class="danger" (click)="remove(r)">Delete</button>
+      </td>
+    </tr>
+    </tbody>
+  </table>
+
+  <div *ngIf="!loading && !error && !view.length" class="muted">No box scores.</div>
+
+  <!-- Totals (po timu) -->
+  <div class="totals" *ngIf="!loading && !error && (homeTotals || awayTotals)">
+    <div class="tot" *ngIf="homeTotals as t">
+      <div class="label">{{ abbrOf(game?.homeTeamName) }} totals</div>
+      <div class="vals">
+        PTS {{ t.pts }} · REB {{ t.reb }} · AST {{ t.ast }} · STL {{ t.stl }} · BLK {{ t.blk }} ·
+        TOV {{ t.tov }} · eFG {{ pct(t.efg) }} · TS {{ pct(t.ts) }}
+      </div>
+    </div>
+
+    <div class="tot" *ngIf="awayTotals as t">
+      <div class="label">{{ abbrOf(game?.awayTeamName) }} totals</div>
+      <div class="vals">
+        PTS {{ t.pts }} · REB {{ t.reb }} · AST {{ t.ast }} · STL {{ t.stl }} · BLK {{ t.blk }} ·
+        TOV {{ t.tov }} · eFG {{ pct(t.efg) }} · TS {{ pct(t.ts) }}
+      </div>
+    </div>
+  </div>
+</section>

@@ -1,0 +1,22 @@
+/* src/app/games/pages/boxscores/boxscore-form.component.css */
+.card { background:#0f1624; border-radius:14px; padding:16px; max-width:980px; }
+.grid { display:grid; grid-template-columns: repeat(3, 1fr); gap:12px; }
+label { display:flex; flex-direction:column; gap:6px; }
+input, select { padding:10px; border-radius:10px; background:#0b1220; border:1px solid #1f2a44; color:#cfe3ff; }
+.actions { display:flex; justify-content:flex-end; gap:8px; margin-top:14px; }
+.primary { padding:8px 12px; border-radius:10px; background:#2d5bff; color:#fff; border:0; }
+.ghost { padding:8px 12px; border-radius:10px; background:transparent; border:1px solid #1f2a44; color:#cfe3ff; }
+.error { color:#ff6b6b; margin-top:8px; }
+.muted { color:#9bb3d1; margin:8px 0; }
+.small { font-size:12px; }
+.warn { color:#ffb020; font-size:12px; margin-top:4px; }
+
+/* sticky actions bar u okviru forme */
+.sticky { position: sticky; bottom: 8px; background: rgba(15,22,36,0.85); backdrop-filter: blur(6px); padding: 10px; border-radius: 12px; }
+
+.quick { display:flex; gap:18px; margin-top:8px; color:#9bb3d1; }
+.quick b { color:#e9f1ff; }
+
+@media (max-width: 760px) {
+  .grid { grid-template-columns: 1fr; }
+}

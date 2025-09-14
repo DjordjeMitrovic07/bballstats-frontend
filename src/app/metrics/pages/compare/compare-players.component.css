@@ -1,0 +1,115 @@
+.cmp-page { padding: 24px; }
+
+.title {
+  font-size: 32px;
+  font-weight: 800;
+  margin: 0 0 18px;
+}
+
+.controls {
+  display: flex;
+  gap: 12px;
+  align-items: center;
+  margin-bottom: 20px;
+  flex-wrap: wrap;
+}
+
+.ctl, .btn {
+  height: 36px;
+  padding: 0 12px;
+  border-radius: 8px;
+  border: 1px solid #2a2f3a;
+  background: #0f1420;
+  color: #e9eef9;
+}
+.btn {
+  background: #3554ff;
+  border-color: #3554ff;
+  cursor: pointer;
+}
+.btn[disabled] {
+  opacity: .5;
+  cursor: not-allowed;
+}
+
+.state { margin: 12px 0; }
+.state.muted { color: #8b94a7; }
+.state.error { color: #ff6b6b; }
+
+/* two big cards */
+.cards {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 18px;
+}
+@media (max-width: 900px){
+  .cards { grid-template-columns: 1fr; }
+}
+
+.player-card {
+  background: #0b111a;
+  border: 1px solid #1f2633;
+  border-radius: 14px;
+  padding: 16px;
+  box-shadow: 0 6px 18px rgba(0,0,0,.25);
+}
+
+.header {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin-bottom: 8px;
+}
+.avatar {
+  width: 54px;
+  height: 54px;
+  border-radius: 50%;
+  object-fit: cover;
+  border: 2px solid #26324a;
+}
+.who .name { font-weight: 700; font-size: 18px; }
+.who .abbr { color: #94a3b8; font-size: 13px; }
+
+.team-chip {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  background: #101827;
+  border: 1px solid #25324a;
+  border-radius: 999px;
+  padding: 6px 10px;
+  margin: 8px 0 14px;
+}
+.team-chip img {
+  width: 22px; height: 22px; border-radius: 50%;
+}
+
+/* metrics list */
+.metrics {
+  list-style: none;
+  margin: 0; padding: 0;
+  display: grid; gap: 10px;
+}
+.metrics li {
+  display: grid;
+  grid-template-columns: 70px 1fr 70px;
+  align-items: center;
+  gap: 10px;
+}
+.metrics li > span:first-child { color: #9aa7bd; }
+
+.bar {
+  height: 8px;
+  background: #1a2435;
+  border-radius: 999px;
+  overflow: hidden;
+  border: 1px solid #23304a;
+}
+.fill {
+  height: 100%;
+  width: 0%;
+  background: linear-gradient(90deg, #4f8bff, #7ee0ff);
+  transition: width .35s ease;
+}
+
+.val { text-align: right; font-weight: 700; }

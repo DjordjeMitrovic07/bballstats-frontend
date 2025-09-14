@@ -1,0 +1,75 @@
+<div class="page">
+  <div class="header">
+    <img class="logo" [src]="teamLogo(team?.id)" (error)="imgFallback($event)" alt="logo">
+    <div class="title">
+      <h1>{{ team.name }}</h1>
+      <div class="sub">
+        {{ team?.city || '—' }}
+        <ng-container *ngIf="team?.foundedYear"> • Founded {{ team?.foundedYear }}</ng-container>
+      </div>
+    </div>
+
+    <div class="grow"></div>
+
+    <select class="season" [(ngModel)]="season" (ngModelChange)="onSeasonChange($event)">
+      <option *ngFor="let s of seasons" [value]="s">{{ s }}</option>
+    </select>
+  </div>
+
+  <div *ngIf="loading" class="muted">Loading…</div>
+  <div *ngIf="!loading && error" class="error">{{ error }}</div>
+
+  <div *ngIf="!loading && !error">
+    <!-- KPI -->
+    <div class="kpi">
+      <div class="card"><div class="k">Record</div><div class="v">{{ wins }}-{{ losses }}</div></div>
+      <div class="card"><div class="k">PPG</div><div class="v">{{ ppg }}</div></div>
+      <div class="card"><div class="k">Opp PPG</div><div class="v">{{ oppg }}</div></div>
+    </div>
+
+    <!-- Team Metrics (NEW) -->
+    <h3 class="block-title">Team Metrics — {{ season }}</h3>
+    <app-team-metrics-card
+      *ngIf="team?.id"
+      [teamId]="team.id"
+      [season]="season">
+    </app-team-metrics-card>
+
+    <!-- Recent games -->
+    <h3 class="block-title">Games — {{ season }}</h3>
+    <table class="tbl" *ngIf="view.length; else noGames">
+      <thead>
+      <tr>
+        <th style="width:180px;">Date</th>
+        <th>Opponent</th>
+        <th style="width:80px;">W/L</th>
+        <th style="width:120px;">Score</th>
+      </tr>
+      </thead>
+      <tbody>
+      <tr *ngFor="let g of view">
+        <td>{{ g.dateTime | date:'yyyy-MM-dd HH:mm' }}</td>
+        <td>{{ opponentName(g) }}</td>
+        <td>
+          <span class="badge" [class.win]="resultBadge(g)==='W'" [class.loss]="resultBadge(g)==='L'">
+            {{ resultBadge(g) }}
+          </span>
+        </td>
+        <td>{{ scoreText(g) }}</td>
+      </tr>
+      </tbody>
+    </table>
+    <ng-template #noGames><div class="muted">No games for selected season.</div></ng-template>
+
+    <!-- Roster -->
+    <h3 class="block-title">Roster</h3>
+    <div class="roster">
+      <div class="player" *ngFor="let p of roster" (click)="goPlayer(p)">
+        <img [src]="'/assets/players/' + p.id + '.png'" (error)="imgFallback($event)" alt="p" />
+        <div class="name">{{ p.firstName }} {{ p.lastName }}</div>
+        <div class="meta">{{ p.position || '—' }} <ng-container *ngIf="p.jerseyNumber != null">• #{{ p.jerseyNumber }}</ng-container></div>
+      </div>
+      <div *ngIf="!roster.length" class="muted">No players assigned.</div>
+    </div>
+  </div>
+</div>

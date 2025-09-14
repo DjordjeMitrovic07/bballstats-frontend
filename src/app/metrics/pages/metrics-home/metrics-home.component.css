@@ -1,0 +1,39 @@
+.metrics-page {
+  padding: 16px 0;
+}
+
+.controls {
+  display: flex;
+  gap: 16px;
+  align-items: center;
+  flex-wrap: wrap;
+  margin-bottom: 20px;
+}
+
+.controls label {
+  display: inline-flex;
+  gap: 8px;
+  align-items: center;
+  font-weight: 500;
+}
+
+/* Responsive GRID za kartice */
+.metrics-grid {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 16px;
+}
+
+/* Tablet */
+@media (max-width: 1100px) {
+  .metrics-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
+
+/* Telefon */
+@media (max-width: 720px) {
+  .metrics-grid {
+    grid-template-columns: 1fr;
+  }
+}

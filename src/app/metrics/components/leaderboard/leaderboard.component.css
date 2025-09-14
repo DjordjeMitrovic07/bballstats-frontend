@@ -1,0 +1,100 @@
+/* root kartica */
+.card {
+  background: #0f1824;
+  border-radius: 16px;
+  padding: 14px 16px;
+  box-shadow: 0 4px 16px rgba(0,0,0,.20);
+}
+
+/* header unutar kartice */
+.card-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  margin-bottom: 10px;
+}
+
+.title {
+  font-weight: 600;
+  color: #cfe3ff;
+}
+
+.badge {
+  background: #162033;
+  color: #9fb4d9;
+  border-radius: 999px;
+  padding: 4px 10px;
+  font-size: 12px;
+  font-weight: 600;
+}
+
+/* stanja */
+.state { padding: 8px 0; }
+.state.error { color: #ff6b6b; }
+.muted { opacity: .7; }
+
+/* lista rezultata */
+.list {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+/* pojedinačan red */
+.row {
+  display: grid;
+  grid-template-columns: 32px 48px 1fr auto;
+  align-items: center;
+  gap: 10px;
+
+  background: #0b1320;
+  border: 1px solid #1b2740;
+  border-radius: 12px;
+  padding: 8px 10px;
+}
+
+.rank {
+  color: #9fb4d9;
+  font-weight: 600;
+  text-align: center;
+}
+
+.avatar {
+  width: 48px;
+  height: 48px;
+  border-radius: 50%;
+  object-fit: cover;
+  background: #0a0f18;
+  border: 1px solid #1b2740;
+}
+
+.info { min-width: 0; }
+.info .name {
+  color: #e5efff;
+  font-weight: 600;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+.info .team {
+  color: #8fa7cc;
+  font-size: 12px;
+}
+
+/* vrednost desno, stabilni brojevi */
+.value {
+  color: #e5efff;
+  font-weight: 700;
+  font-variant-numeric: tabular-nums;
+  text-align: right;
+}
+
+/* malo kompaktnije na uskim ekranima */
+@media (max-width: 600px) {
+  .row { grid-template-columns: 28px 40px 1fr auto; }
+  .avatar { width: 40px; height: 40px; }
+}
